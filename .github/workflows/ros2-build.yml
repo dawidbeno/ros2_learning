@@ -24,6 +24,7 @@ jobs:
       
       - name: Build services
         working-directory: ${{ github.workspace }}
+        shell: bash
         run: |
           cd services
           source /opt/ros/jazzy/setup.bash
@@ -31,6 +32,7 @@ jobs:
       
       - name: Build actions
         working-directory: ${{ github.workspace }}
+        shell: bash
         run: |
           cd actions
           source /opt/ros/jazzy/setup.bash
@@ -38,6 +40,7 @@ jobs:
       
       - name: Run tests
         working-directory: ${{ github.workspace }}
+        shell: bash
         run: |
           source /opt/ros/jazzy/setup.bash
           cd services
