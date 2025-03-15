@@ -1,0 +1,48 @@
+name: ROS 2 Build
+
+on:
+  push:
+    branches: [ main ]
+  pull_request:
+    branches: [ main ]
+  workflow_dispatch:
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    container:
+      image: ros:jazzy
+    
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v3
+      
+      - name: Install dependencies
+        run: |
+          apt-get update
+          apt-get install -y python3-pip
+          pip3 install -U pytest
+      
+      - name: Build services
+        working-directory: ${{ github.workspace }}
+        run: |
+          cd services
+          source /opt/ros/jazzy/setup.bash
+          colcon build --packages-select py_srvcli
+      
+      - name: Build actions
+        working-directory: ${{ github.workspace }}
+        run: |
+          cd actions
+          source /opt/ros/jazzy/setup.bash
+          colcon build --packages-select custom_action_interfaces action_py
+      
+      - name: Run tests
+        working-directory: ${{ github.workspace }}
+        run: |
+          source /opt/ros/jazzy/setup.bash
+          cd services
+          colcon test --packages-select py_srvcli
+          cd ../actions
+          colcon test --packages-select custom_action_interfaces action_py
+          colcon test-result --verbose 
