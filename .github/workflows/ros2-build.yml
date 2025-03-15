@@ -20,8 +20,7 @@ jobs:
       - name: Install dependencies
         run: |
           apt-get update
-          apt-get install -y python3-pip
-          pip3 install -U pytest
+          # Install any additional dependencies here if needed
       
       - name: Build services
         working-directory: ${{ github.workspace }}
