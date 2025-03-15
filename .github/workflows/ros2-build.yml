@@ -42,20 +42,10 @@ jobs:
         working-directory: ${{ github.workspace }}
         shell: bash
         continue-on-error: true  # Allow tests to fail without failing the workflow
-        id: run_tests
         run: |
           source /opt/ros/jazzy/setup.bash
           cd services
           colcon test --packages-select py_srvcli
           cd ../actions
           colcon test --packages-select custom_action_interfaces action_py
-          colcon test-result --verbose
-      
-      - name: Upload test results
-        if: always()
-        uses: actions/upload-artifact@v2
-        with:
-          name: test-results
-          path: |
-            ${{ github.workspace }}/services/build/*/test_results
-            ${{ github.workspace }}/actions/build/*/test_results 
+          colcon test-result --verbose 
