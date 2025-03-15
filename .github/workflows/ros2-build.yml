@@ -11,7 +11,7 @@ jobs:
   build:
     runs-on: ubuntu-latest
     container:
-      image: ros:jazzy
+      image: ros:jazzy-ros-base-noble
     
     steps:
       - name: Checkout code
