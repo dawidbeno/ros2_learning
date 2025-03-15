@@ -10,3 +10,9 @@ Explaining tutorial what action in ros2 is: [Understand actions](https://docs.ro
 
 Followed this tutorial: [ROS2 jazzy actions](https://docs.ros.org/en/jazzy/Tutorials/Intermediate/Writing-an-Action-Server-Client/Py.html)
 Hello world demo for ROS2 action is in `action`
+
+## Continuous Integration
+
+This repository uses GitHub Actions for continuous integration. The CI pipeline automatically builds and tests all ROS 2 packages on every push to the main branch and pull requests.
+
+See the [CI documentation](.github/README.md) for more details.

@@ -1,0 +1,52 @@
+name: ROS 2 Build
+
+on:
+  push:
+    branches: [ main ]
+  pull_request:
+    branches: [ main ]
+  workflow_dispatch:
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    container:
+      image: ros:jazzy-ros-base-noble
+    
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v3
+      
+      - name: Install dependencies
+        run: |
+          apt-get update
+          # Install any additional dependencies here if needed
+      
+      - name: Build services
+        working-directory: ${{ github.workspace }}
+        shell: bash
+        run: |
+          cd services
+          source /opt/ros/jazzy/setup.bash
+          colcon build --packages-select py_srvcli
+      
+      - name: Build actions
+        working-directory: ${{ github.workspace }}
+        shell: bash
+        run: |
+          cd actions
+          # Create .ament_ignore file to skip linting for the custom_action_interfaces package
+          touch custom_action_interfaces/.ament_ignore
+          source /opt/ros/jazzy/setup.bash
+          colcon build --packages-select custom_action_interfaces action_py
+      
+      - name: Run tests
+        working-directory: ${{ github.workspace }}
+        shell: bash
+        run: |
+          source /opt/ros/jazzy/setup.bash
+          cd services
+          colcon test --packages-select py_srvcli
+          cd ../actions
+          colcon test --packages-select action_py
+          colcon test-result --verbose 
