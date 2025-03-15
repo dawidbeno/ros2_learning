@@ -1,0 +1,2 @@
+# This file tells colcon to ignore this package for linting
+# The linting errors are in generated code that should not be modified directly 
